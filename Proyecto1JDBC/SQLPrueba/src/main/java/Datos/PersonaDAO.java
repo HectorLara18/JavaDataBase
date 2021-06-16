@@ -11,6 +11,7 @@ public class PersonaDAO {
     private static final String SQL_SELECT = "SELECT id_persona, nombre, apellido, email, telefono FROM persona";
     private static final String SQL_INSERT = "INSERT INTO persona(nombre, apellido, email, telefono) VALUES(?,?,?,?)";
     private static final String SQL_UPDATE = "UPDATE persona set nombre = ?, apellido = ?, email = ?, telefono = ? WHERE id_persona = ?";
+    private static final String SQL_DELETE = "DELETE FROM persona WHERE email = ?";
 
     public List<Persona> seleccionar(){
         Connection conn = null;
@@ -94,6 +95,33 @@ public class PersonaDAO {
                 Conexion.close(stmt);
                 Conexion.close(conn);
             } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+
+        return registro;
+    }
+
+    public int eliminar(String email){
+        var persona = new Persona();
+        persona.setEmail(email);
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        int registro = 0;
+
+        try{
+            conn = getConnection();
+            stmt = conn.prepareStatement(SQL_DELETE);
+            stmt.setString(1, persona.getEmail());
+            registro = stmt.executeUpdate();
+            System.out.println("se elimino registro");
+        }catch (SQLException ex){
+            ex.printStackTrace(System.out);
+        } finally {
+            try {
+                Conexion.close(stmt);
+                Conexion.close(conn);
+            } catch (SQLException ex){
                 ex.printStackTrace(System.out);
             }
         }
