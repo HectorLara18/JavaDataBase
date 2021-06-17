@@ -11,7 +11,7 @@ import static domain.Conexion.*;
 public class PersonaDAO {
     //Atributos
 
-    private static final String SQL_SELECT = "SELECT id_usuario, nombre, apellido, isActive from usuarios";
+    private static final String SQL_SELECT = "SELECT id_usuarios, nombre, apellido, isActive from usuarios";
     private static final String SQL_INSERT = "insert into usuarios(nombre,apellido,isActive) values(?,?,?)";
     private static final String SQL_UPDATE = "";
     private static final String SQL_DELETE = "";
@@ -26,17 +26,18 @@ public class PersonaDAO {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        Usuario usuario = new Usuario();
         List<Usuario> usuarios = new ArrayList<>();
+        Usuario usuario;
         try {
             conn = getConnection();
             stmt = conn.prepareStatement(SQL_SELECT);
             rs = stmt.executeQuery();
             while (rs.next()){
-                usuario.setIdUsuario(rs.getInt("id_usuario"));
-                usuario.setNombre(rs.getString("nombre"));
-                usuario.setApellido(rs.getString("apellido"));
-                usuario.setActive(rs.getBoolean("isActive"));
+                int idPersona = rs.getInt("id_usuarios");
+                String nombre = rs.getString("nombre");
+                String apellido = rs.getString("apellido");
+                boolean isActive = rs.getBoolean("isActive");
+                usuario = new Usuario(idPersona,nombre,apellido,isActive);
                 usuarios.add(usuario);
             }
         }catch(SQLException ex){
