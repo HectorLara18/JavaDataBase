@@ -11,11 +11,17 @@ public class Usuario {
     //Constyructos
     public Usuario(){};
 
+    public Usuario(String nombre, String apellido){
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.isActive = true;
+    }
+
     public Usuario(int idUsuario,String nombre, String apellido, boolean isActive){
         this.nombre = nombre;
         this.apellido = apellido;
         this.idUsuario = idUsuario;
-        isActive = true;
+        this.isActive = isActive;
     }
 
     public int getIdUsuario() {
