@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TestInsert {
     public static void main(String[] args) {
-        Usuario usuario = new Usuario("Raul", "Lara");
+        Usuario usuario = new Usuario("Jazmin", "Banda");
         PersonaDAO personaDAO = new PersonaDAO();
         List<Usuario> usuarios;
         personaDAO.insertar(usuario);
