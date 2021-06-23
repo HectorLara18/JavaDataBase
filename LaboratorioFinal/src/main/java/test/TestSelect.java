@@ -2,7 +2,6 @@ package test;
 
 import datos.PersonaDAO;
 import domain.Usuario;
-
 import java.util.List;
 
 public class TestSelect {

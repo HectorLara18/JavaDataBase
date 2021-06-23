@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Locale;
+
 public class Usuario {
     //Atributos
     private int idUsuario;
@@ -54,6 +56,12 @@ public class Usuario {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public String crearUsuario(){
+        String myuser = null;
+        myuser = this.getNombre().substring(0,1).toLowerCase() + this.getApellido().toLowerCase();
+        return myuser;
     }
 
     @Override
