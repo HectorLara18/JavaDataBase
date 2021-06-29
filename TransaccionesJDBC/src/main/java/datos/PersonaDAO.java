@@ -11,6 +11,8 @@ import static domain.Conexion.*;
 public class PersonaDAO {
     //Atributos
 
+    private Connection ConexionTransaccional;
+
     private static final String SQL_SELECT = "SELECT id_usuarios, nombre, apellido, isActive from usuarios";
     private static final String SQL_INSERT = "insert into usuarios(nombre,apellido,isActive) values(?,?,?)";
     private static final String SQL_UPDATE = "update usuarios set nombre = ?, apellido = ?, isActive = ? where id_usuarios = ?";
@@ -19,6 +21,10 @@ public class PersonaDAO {
     //Constructor
 
     public PersonaDAO(){};
+
+    public PersonaDAO(Connection conexionTransaccional){
+        this.ConexionTransaccional = conexionTransaccional;
+    }
 
     //Metodos
 
@@ -29,7 +35,7 @@ public class PersonaDAO {
         List<Usuario> usuarios = new ArrayList<>();
         Usuario usuario;
         try {
-            conn = getConnection();
+            conn = this.ConexionTransaccional != null ? this.ConexionTransaccional : getConnection();
             stmt = conn.prepareStatement(SQL_SELECT);
             rs = stmt.executeQuery();
             while (rs.next()){
@@ -46,7 +52,9 @@ public class PersonaDAO {
             try {
                 close(rs);
                 close(stmt);
-                close(conn);
+                if(this.ConexionTransaccional == null){
+                    close(conn);
+                }
             } catch(SQLException ex){
                 ex.printStackTrace(System.out);
             }
@@ -59,7 +67,7 @@ public class PersonaDAO {
         Connection conn = null;
         PreparedStatement stmt = null;
         try {
-            conn = getConnection();
+            conn = this.ConexionTransaccional != null ? this.ConexionTransaccional : getConnection();
             stmt = conn.prepareStatement(SQL_INSERT);
             stmt.setString(1, usuario.getNombre());
             stmt.setString(2, usuario.getApellido());
@@ -71,7 +79,9 @@ public class PersonaDAO {
         } finally {
             try {
                 close(stmt);
-                close(conn);
+                if(this.ConexionTransaccional == null){
+                    close(conn);
+                }
             }catch (SQLException ex){
                 ex.printStackTrace(System.out);
             }
@@ -85,7 +95,7 @@ public class PersonaDAO {
         Connection conn = null;
         PreparedStatement stmt = null;
         try{
-            conn = getConnection();
+            conn = this.ConexionTransaccional != null ? this.ConexionTransaccional : getConnection();
             stmt = conn.prepareStatement(SQL_UPDATE);
             stmt.setString(1, usuario.getNombre());
             stmt.setString(2, usuario.getApellido());
@@ -98,7 +108,9 @@ public class PersonaDAO {
         }finally {
             try{
                 close(stmt);
-                close(conn);
+                if(this.ConexionTransaccional == null){
+                    close(conn);
+                }
             }catch(SQLException ex){
                 ex.printStackTrace(System.out);
             }
@@ -111,7 +123,7 @@ public class PersonaDAO {
         PreparedStatement stmt = null;
         int resultado = 0;
         try {
-            conn = getConnection();
+            conn = this.ConexionTransaccional != null ? this.ConexionTransaccional : getConnection();
             stmt = conn.prepareStatement(SQL_DELETE);
             stmt.setInt(1,idUsuarios);
             resultado = stmt.executeUpdate();
@@ -120,7 +132,9 @@ public class PersonaDAO {
         }finally {
             try{
                 close(stmt);
-                close(conn);
+                if(this.ConexionTransaccional == null){
+                    close(conn);
+                }
             }catch(SQLException ex){
                 ex.printStackTrace(System.out);
             }
